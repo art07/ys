@@ -17,18 +17,18 @@ func createTree(value string) (tree *Tree) {
 	return
 }
 
-func (t *Tree) insert(nodeLine string, column int) *Tree {
-	if strings.Split(nodeLine, ",")[column-1] < strings.Split(t.line, ",")[column-1] {
+func (t *Tree) insert(nodeLine string) *Tree {
+	if strings.Split(nodeLine, ",")[fColumn-1] < strings.Split(t.line, ",")[fColumn-1] {
 		if t.leftTree == nil {
 			t.leftTree = createTree(nodeLine)
 		} else {
-			t.leftTree.insert(nodeLine, column)
+			t.leftTree.insert(nodeLine)
 		}
 	} else {
 		if t.rightTree == nil {
 			t.rightTree = createTree(nodeLine)
 		} else {
-			t.rightTree.insert(nodeLine, column)
+			t.rightTree.insert(nodeLine)
 		}
 	}
 	return t
@@ -44,10 +44,10 @@ func (t *Tree) forEach(fn func(string)) {
 	}
 }
 
-func binaryTreeSort(linesArr []string, column int) *Tree {
+func binaryTreeSort(linesArr []string) *Tree {
 	mainTree := createTree(linesArr[0])
 	for _, nodeLine := range linesArr[1:] {
-		mainTree.insert(nodeLine, column)
+		mainTree.insert(nodeLine)
 	}
 	return mainTree
 }

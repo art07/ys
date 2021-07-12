@@ -20,6 +20,8 @@ var strForApp = "\"CSV-Sorter\" is an app which sorts all lines alphabetically b
 	"\tflag -r > reverse data (-r);\n" +
 	"\tflag -f > number of column; min=1 (-f=5).\n"
 
+var minColumn, maxColumn, fColumn = 1, 0, 0
+
 //goland:noinspection GoPrintFunctions
 func main() {
 	fmt.Println(strForApp)
@@ -29,10 +31,10 @@ func main() {
 	hHeader := flag.Bool("h", false, "using header")
 	oFile := flag.String("o", "noValue", "using file for write")
 	reverseOrder := flag.Bool("r", false, "reverse order")
-	fColumn := flag.Int("f", 1, "using for column")
+	flag.IntVar(&fColumn, "f", minColumn, "using for column")
 	flag.Parse()
 
-	if *fColumn < 1 {
+	if fColumn < 1 {
 		fmt.Println("Min number of column #1")
 		return
 	}
@@ -54,14 +56,26 @@ func main() {
 		}
 	}
 
+	if len(linesArr) < 1 {
+		fmt.Println("No data for job")
+		return
+	} else {
+		lastLine := linesArr[len(linesArr)-1]
+		maxColumn = len(strings.Split(lastLine, ","))
+		if fColumn > maxColumn {
+			fmt.Printf("Max number of column #%d\n", maxColumn)
+			return
+		}
+	}
+
 	/*Получаю ссылку на корневой объект Tree с распределенными данными.*/
 	var header string
 	var tree *Tree
 	if *hHeader {
 		header = linesArr[0]
-		tree = binaryTreeSort(linesArr[1:], *fColumn)
+		tree = binaryTreeSort(linesArr[1:])
 	} else {
-		tree = binaryTreeSort(linesArr, *fColumn)
+		tree = binaryTreeSort(linesArr)
 	}
 
 	/*Обратный сбор данных по дереву для печати.*/
