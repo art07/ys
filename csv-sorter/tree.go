@@ -1,24 +1,24 @@
 package main
 
+import "strings"
+
 type Tree struct {
-	line        string
-	firstLetter rune
-	leftTree    *Tree
-	rightTree   *Tree
+	line      string
+	leftTree  *Tree
+	rightTree *Tree
 }
 
 func createTree(value string) (tree *Tree) {
 	tree = &Tree{
-		line:        value,
-		firstLetter: []rune(value)[0],
-		leftTree:    nil,
-		rightTree:   nil,
+		line:      value,
+		leftTree:  nil,
+		rightTree: nil,
 	}
 	return
 }
 
 func (t *Tree) insert(nodeLine string) *Tree {
-	if []rune(nodeLine)[0] < t.firstLetter {
+	if strings.Split(nodeLine, ",")[0] < t.line {
 		if t.leftTree == nil {
 			t.leftTree = createTree(nodeLine)
 		} else {
