@@ -17,7 +17,8 @@ var strForApp = "\"CSV-Sorter\" is an app which sorts all lines alphabetically b
 	"\tflag -i > read file (-i=С:/docs/test.csv);\n" +
 	"\tflag -h > data with header (-h);\n" +
 	"\tflag -o > write data in file (-o=С:/docs/test.csv).\n" +
-	"\tflag -r > reverse data (-r).\n"
+	"\tflag -r > reverse data (-r);\n" +
+	"\tflag -f > number of column; min=1 (-f=5).\n"
 
 //goland:noinspection GoPrintFunctions
 func main() {
@@ -28,7 +29,13 @@ func main() {
 	hHeader := flag.Bool("h", false, "using header")
 	oFile := flag.String("o", "noValue", "using file for write")
 	reverseOrder := flag.Bool("r", false, "reverse order")
+	fColumn := flag.Int("f", 1, "using for column")
 	flag.Parse()
+
+	if *fColumn < 1 {
+		fmt.Println("Min number of column #1")
+		return
+	}
 
 	/*Получаю лист csv строк для сортировки.*/
 	linesArr := make([]string, 0)
@@ -52,9 +59,9 @@ func main() {
 	var tree *Tree
 	if *hHeader {
 		header = linesArr[0]
-		tree = binaryTreeSort(linesArr[1:])
+		tree = binaryTreeSort(linesArr[1:], *fColumn)
 	} else {
-		tree = binaryTreeSort(linesArr)
+		tree = binaryTreeSort(linesArr, *fColumn)
 	}
 
 	/*Обратный сбор данных по дереву для печати.*/
