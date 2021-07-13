@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-var strForApp = "\"CSV-Sorter\" is an app which sorts all lines alphabetically by the first value in each " +
+var strForApp = "\"CSV-Sorter\" is an app which sorts all CSV lines alphabetically by the first value in each " +
 	"line using the Tree Sort algorithm.\n" +
 	"Flags:\n" +
 	"\tflag -i > read file (-i=С:/docs/test.csv);\n" +
@@ -56,7 +56,7 @@ func main() {
 		}
 	}
 
-	if len(linesArr) < 1 {
+	if (len(linesArr) < 1) || (len(linesArr) == 1 && *hHeader) {
 		fmt.Println("No data for job")
 		return
 	} else {
